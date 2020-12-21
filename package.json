@@ -1,0 +1,29 @@
+{
+  "name": "futapi",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/S1M0N38/futapi-js.git"
+  },
+  "author": "S1M0N38",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/S1M0N38/futapi-js/issues"
+  },
+  "homepage": "https://github.com/S1M0N38/futapi-js#readme",
+  "devDependencies": {
+    "eslint": "^7.16.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1"
+  },
+  "dependencies": {
+    "puppeteer": "^5.5.0"
+  }
+}
