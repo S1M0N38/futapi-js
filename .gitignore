@@ -174,5 +174,5 @@ tags
 # End of https://www.toptal.com/developers/gitignore/api/node,vscode,vim,macos
 
 ### Inside users dir are stored login information (never add to git)
-futapi/users/*
-!futapi/users/.gitkeep
+users/*
+!users/.gitkeep
