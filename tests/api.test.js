@@ -1,30 +1,54 @@
-/*
-Different account are used to test differnet part of the api
-
-- userNotConfigured: user that is not configured with the login script so, the
-    userDataDir is missing. (None)
-
-- userConfigured: account that is configured with the login.js but does not have
-    a physical copy of the game its webapp is enterly locked. (G.G)
-
-- userLogin: an accont able to login in the webapp but with market locked. It's
-    used to test the login process. (U.B.)
-
-- userUnlocked: Fully working account with the market on the webapp unlocked.
-    It's used to test the interesting part of the API. (B.P.)
-*/
-
 import API from '../futapi/api.js'
-import { CredentialsError, LoginError } from '../futapi/errors.js'
+import { LoginError } from '../futapi/errors.js'
+import { user1 } from './users.js'
 
-test('user configured with login.js', () => {
-  const username = 'userConfigured'
-  const api = new API(username)
-  expect(api.username).toBe(username)
-  expect(api.loggedIn).toBeFalsy()
+describe('API launch', () => {
+  test.skip('first time login invalid backup codes', async () => {
+    const fakeCodes = ['73899675', '51840933', '12893787']
+    const api = new API(user1.email, user1.password, fakeCodes)
+    api.userDataDir = undefined
+    await expect(api.launch()).rejects.toThrow(LoginError)
+    expect(api.loggedIn).toBeFalsy()
+    await api.close()
+  })
+
+  test.skip('first time login', async () => {
+    const api = new API(user1.email, user1.password, user1.codes)
+    api.userDataDir = undefined
+    await api.launch()
+    expect(api.loggedIn).toBeTruthy()
+    await api.close()
+  })
+
+  test('launch webapp without login', async () => {
+    const api = new API(user1.email, user1.password, user1.codes)
+    await api.launch()
+    expect(api.loggedIn).toBeTruthy()
+    await api.close()
+  })
 })
 
-test('user not configured with login.js', () => {
-  const username = 'userNotConfigured'
-  expect(() => new API(username)).toThrowError(CredentialsError)
+describe.only('API endpoints (no market)', () => {
+  let api
+
+  beforeAll(async () => {
+    api = new API(user1.email, user1.password, user1.codes)
+    await api.launch()
+  })
+
+  test('squads click', async () => {
+    await api._clickSquads()
+    const title = await api.page.$eval('h1.title', el => el.textContent)
+    expect(title).toBe('Squads')
+  })
+
+  test('home click', async () => {
+    await api._clickHome()
+    const title = await api.page.$eval('h1.title', el => el.textContent)
+    expect(title).toBe('Home')
+  })
+
+  afterAll(async () => {
+    await api.close()
+  })
 })
