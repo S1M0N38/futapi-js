@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "jest"
+    "test": "jest --detectOpenHandles --testTimeout=60000 "
   },
   "repository": {
     "type": "git",
